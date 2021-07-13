@@ -1,4 +1,5 @@
 const express = require('express');
+var cookieParser = require('cookie-parser');
 const passport = require('passport');
 const cors = require('cors');
 const MongoStore = require('connect-mongo');
@@ -13,6 +14,16 @@ if (process.env.NODE_ENV === 'production') {
   app.enable('trust proxy');
 }
 
+app.use(cookieParser(process.env.SESSION_SECRET));
+app.use((req, res, next) => {
+  // Cookies that have not been signed
+  console.log('Cookies: ', req.cookies);
+
+  // Cookies that have been signed
+  console.log('Signed Cookies: ', req.signedCookies);
+
+  next();
+});
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
