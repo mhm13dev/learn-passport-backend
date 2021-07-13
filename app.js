@@ -14,6 +14,11 @@ if (process.env.NODE_ENV === 'production') {
   app.enable('trust proxy');
 }
 
+// Accept Signed Cookies
+const corsConfig = { origin: true, credentials: true };
+app.use(cors(corsConfig));
+app.options('*', cors(corsConfig));
+
 app.use(cookieParser(process.env.SESSION_SECRET));
 app.use((req, res, next) => {
   // Cookies that have not been signed
@@ -24,7 +29,6 @@ app.use((req, res, next) => {
 
   next();
 });
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
