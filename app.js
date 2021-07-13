@@ -8,6 +8,10 @@ const passportLocal = require('./utils/passport.local');
 
 const app = express();
 
+if (process.env.NODE_ENV === 'production') {
+  app.enable('trust proxy');
+}
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
